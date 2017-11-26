@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>mandelbrot</title>
+    <meta charset="utf-8">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+    <style>
+      html, #fullscreen, body {
+      width: 100%;
+      height: 100%;
+      }
+      body {
+      background-color: #000000;
+      margin: 0px;
+      overflow: hidden;
+      font-family: Monospace;
+      font-size: 10px;
+      text-align: left;
+      }
+
+      * {
+      -webkit-user-select: none;
+      -webkit-appearance: none;
+      -webkit-touch-callout: none;
+      -webkit-tap-highlight-color: rgba(255, 255, 255, 0);
+      outline-style: none;
+      outline: none;
+      }
+
+      a {
+      color:#ffffcc;
+      text-decoration: none;
+      }
+
+      a:hover, #fork a:hover, #gofull a:hover {
+      background-color: #777;
+      }
+
+      div#fork {
+      position: absolute;
+      top: 25px;
+      right: 25px;
+      z-index: 10;
+      }
+
+      div#gofull {
+      position: absolute;
+      bottom: 25px;
+      right: 25px;
+      z-index: 10;
+      cursor: pointer;
+      }
+
+      #fork a, #gofull a {
+      box-shadow: 0px 0px 8px #444;
+      display: inline-block;
+      background-color:  #333;
+      }
+
+      strong {
+      font-weight: bold;
+      font-size: 150%;
+      padding-right: 1em;
+      }
+
+      #author {
+      color: #fff;
+      position: absolute;
+      top: 0;
+      width: 100%;
+      padding: 20px;
+      z-index: 10;
+      }
+
+    </style>
+  </head>
+  <body>
+    <script src="three.min.js"></script>
+    <script src="OBJLoader.js"></script>
+    <script type="x-shader/x-vertex" id="vertexshader">
+      uniform float uZoom;
+      varying vec2 fractalPosition;
+
+      void main() {
+      fractalPosition = position.xy * uZoom * 0.001;
+      vec4 mvPosition = modelViewMatrix * vec4(position, 1.0);
+      gl_Position = projectionMatrix * mvPosition;
+      }
+    </script>
+
+    <script type="x-shader/x-fragment" id="fragmentshader">
+      precision highp float;
+      uniform vec3 uColor1;
+      uniform vec3 uColor2;
+      uniform vec2 uConstant;
+      uniform sampler2D texture;
+      uniform float uZoom;
+      uniform float uScaler;
+      varying vec2 fractalPosition;
+
+      void main() {
+      vec2 fractal = fractalPosition;
+      vec2 constant = uConstant * uScaler + (1.0 - uScaler) * fractalPosition;
+            for (int i = 0; i < 20; ++i) {
+                          fractal = uZoom * constant + vec2(fractal.x * fractal.x - fractal.y * fractal.y, 2.0 * fractal.x * fractal.y);
+                          float c = clamp(length(fractal), 0.0, 1.0);
+                          gl_FragColor = vec4(uColor1 * c + uColor2 * (1.0 - c), 1.0);
+                          if (length(fractal) > 2.0) {
+        gl_FragColor = vec4(0, 0, 0, 1);
+        }
+        }
+        }
+    </script>
+
+    <script src="mandelbrot.js"></script>
+    <div id="author"><strong>Mandelbrot</Strong><br>by Markku Rontu<br><a href="http://threejs.org">with Three.js</a></div>
+
+    <div id="fork">
+      <a href="https://github.com/Macroz/mandelbrot">
+        Fork me on Github
+      </a>
+    </div>
+    <div id="gofull">
+      <a>
+        Fullscreen
+      </a>
+    </div>
+  </body>
+</html>

@@ -93,6 +93,7 @@
       precision highp float;
       uniform vec3 uColor1;
       uniform vec3 uColor2;
+      uniform vec3 uColor3;
       uniform vec2 uConstant;
       uniform sampler2D texture;
       uniform float uZoom;
@@ -104,8 +105,10 @@
       vec2 constant = uConstant * uScaler + (1.0 - uScaler) * fractalPosition;
             for (int i = 0; i < 20; ++i) {
                           fractal = uZoom * constant + vec2(fractal.x * fractal.x - fractal.y * fractal.y, 2.0 * fractal.x * fractal.y);
-                          float c = clamp(length(fractal), 0.0, 1.0);
-                          gl_FragColor = vec4(uColor1 * c + uColor2 * (1.0 - c), 1.0);
+                                float c1 = clamp(length(fractal), 0.0, 1.0);
+                                float c2 = uScaler;
+                                vec3 col = (uColor1 * (1.0 - c2) + uColor2 * c2) * c1 + uColor3 * (1.0 - c1);
+                          gl_FragColor = vec4(col, 1.0);
                           if (length(fractal) > 2.0) {
         gl_FragColor = vec4(0, 0, 0, 1);
         }

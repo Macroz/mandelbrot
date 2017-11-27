@@ -12,7 +12,8 @@ var windowHalfX = window.innerWidth / 2;
 var windowHalfY = window.innerHeight / 2;
 
 var color1 = new THREE.Color(0, 140 / 255, 186 / 255);
-var color2 = new THREE.Vector3(0.0, 0.0, 0.0);
+var color2 = new THREE.Color(1, 1, 0.2);
+var color3 = new THREE.Vector3(0.0, 0.0, 0.0);
 
 init();
 animate();
@@ -35,6 +36,7 @@ function init() {
     texture: { type: "t", value: THREE.ImageUtils.loadTexture('sphere.png') },
     uColor1: { type: "3f", value: new THREE.Vector3(0, 0, 0) },
     uColor2: { type: "3f", value: new THREE.Vector3(0, 0, 0) },
+    uColor3: { type: "3f", value: new THREE.Vector3(0, 0, 0) },
     uConstant: { type: "2f", value: new THREE.Vector2(0, 0) },
     uZoom: { type: "1f", value: 0.0 },
     uScaler: { type: "1f", value: 0.0 }
@@ -186,6 +188,7 @@ function render() {
   //console.log(shaderMaterial.uniforms.uColor1.value);
   shaderMaterial.uniforms.uColor1.value = color1;
   shaderMaterial.uniforms.uColor2.value = color2;
+  shaderMaterial.uniforms.uColor3.value = color3;
   var scaler = Math.sin(t * 0.1 * speed) * Math.sin(t * 0.1 * speed);
   shaderMaterial.uniforms.uConstant.value = new THREE.Vector2(0.1 * Math.cos(3.3 * speed * t) + 0.5 * Math.cos(6.3 * speed * t),
                                                               0.1 * Math.cos(3.9 * speed * t) + 0.5 * Math.sin(5.7 * speed * t));

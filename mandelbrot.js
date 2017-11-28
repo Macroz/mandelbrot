@@ -12,8 +12,8 @@ var windowHalfX = window.innerWidth / 2;
 var windowHalfY = window.innerHeight / 2;
 
 var color1 = new THREE.Color(0, 140 / 255, 186 / 255);
-var color2 = new THREE.Color(1, 1, 0.2);
-var color3 = new THREE.Vector3(0.0, 0.0, 0.0);
+var color2 = new THREE.Color(1, 1, 1);
+var color3 = new THREE.Color(1, 1.0, 0.2);
 
 init();
 animate();
